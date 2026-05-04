@@ -368,7 +368,7 @@ import UIKit
     }
     
     private func takeScreenshot() {
-        guard let rootView = rootView, !processingScreenshot else {
+        guard let rootView = rootView, !processingScreenshot else { 
             SentrySDKLog.debug("[Session Replay] Not taking screenshot, reason: root view is nil or processing screenshot")
             return 
         }

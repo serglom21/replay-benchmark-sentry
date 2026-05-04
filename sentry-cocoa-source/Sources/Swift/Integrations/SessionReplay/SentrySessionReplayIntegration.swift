@@ -83,7 +83,7 @@ public class SentrySessionReplayIntegration: NSObject, SwiftIntegration, SentryS
             sharedDispatchQueue: dependencies.dispatchQueueWrapper
         )
         
-        self.viewPhotographer = Self.createViewPhotographer(options: options, sharedQueue: dependencies.dispatchQueueWrapper)
+        self.viewPhotographer = Self.createViewPhotographer(options: options)
         (self.replayProcessingQueue, self.replayAssetWorkerQueue) = Self.createDispatchQueues(dependencies: dependencies)
         
         super.init()
@@ -99,8 +99,8 @@ public class SentrySessionReplayIntegration: NSObject, SwiftIntegration, SentryS
         setupTouchTrackerIfNeeded(options: options)
         replayFileManager.moveCurrentReplay()
         replayFileManager.cleanUp()
-
         registerEventProcessor(dependencies: dependencies)
+        
         SentrySDKInternal.currentHub().registerSessionListener(self)
         dependencies.reachability.add(self)
     }
@@ -119,9 +119,9 @@ public class SentrySessionReplayIntegration: NSObject, SwiftIntegration, SentryS
     
     // MARK: - Initialization Helpers
     
-    private static func createViewPhotographer(options: Options, sharedQueue: SentryDispatchQueueWrapper) -> SentryViewPhotographer {
+    private static func createViewPhotographer(options: Options) -> SentryViewPhotographer {
         var viewRenderer: SentryViewRenderer
-
+        
         if options.sessionReplay.enableViewRendererV2 {
             SentrySDKLog.debug("[Session Replay] Setting up view renderer v2, fast view rendering: \(options.sessionReplay.enableFastViewRendering)")
             viewRenderer = SentryViewRendererV2(enableFastViewRendering: options.sessionReplay.enableFastViewRendering)

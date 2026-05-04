@@ -22,7 +22,6 @@ final class SentryViewRendererV2: NSObject, SentryViewRenderer {
         }
         return image
     }
-
 }
 
 #endif // os(iOS) || os(tvOS)
