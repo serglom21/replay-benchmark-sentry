@@ -10,6 +10,7 @@
 		0020000000000000000000A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0010000000000000000000A1 /* AppDelegate.swift */; };
 		0020000000000000000000A2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0010000000000000000000A2 /* SceneDelegate.swift */; };
 		0020000000000000000000A3 /* SentryReplayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0010000000000000000000A3 /* SentryReplayController.swift */; };
+		0020000000000000000000E1 /* SentryReplayApiBenchmarkExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0010000000000000000000C3 /* SentryReplayApiBenchmarkExtension.swift */; };
 		0020000000000000000000A4 /* FrameTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0010000000000000000000A4 /* FrameTracker.swift */; };
 		0020000000000000000000A5 /* FrameStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0010000000000000000000A5 /* FrameStats.swift */; };
 		0020000000000000000000A6 /* IntensiveCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0010000000000000000000A6 /* IntensiveCollectionView.swift */; };
@@ -26,6 +27,7 @@
 		0010000000000000000000A1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0010000000000000000000A2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		0010000000000000000000A3 /* SentryReplayController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentryReplayController.swift; sourceTree = "<group>"; };
+		0010000000000000000000C3 /* SentryReplayApiBenchmarkExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentryReplayApiBenchmarkExtension.swift; sourceTree = "<group>"; };
 		0010000000000000000000A4 /* FrameTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameTracker.swift; sourceTree = "<group>"; };
 		0010000000000000000000A5 /* FrameStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameStats.swift; sourceTree = "<group>"; };
 		0010000000000000000000A6 /* IntensiveCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntensiveCollectionView.swift; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				0010000000000000000000A3 /* SentryReplayController.swift */,
+				0010000000000000000000C3 /* SentryReplayApiBenchmarkExtension.swift */,
 			);
 			path = Sentry;
 			sourceTree = "<group>";
@@ -213,6 +216,7 @@
 				0020000000000000000000A1 /* AppDelegate.swift in Sources */,
 				0020000000000000000000A2 /* SceneDelegate.swift in Sources */,
 				0020000000000000000000A3 /* SentryReplayController.swift in Sources */,
+				0020000000000000000000E1 /* SentryReplayApiBenchmarkExtension.swift in Sources */,
 				0020000000000000000000A4 /* FrameTracker.swift in Sources */,
 				0020000000000000000000A5 /* FrameStats.swift in Sources */,
 				0020000000000000000000A6 /* IntensiveCollectionView.swift in Sources */,

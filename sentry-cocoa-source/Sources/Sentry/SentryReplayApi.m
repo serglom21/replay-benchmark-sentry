@@ -84,6 +84,49 @@
     [replayIntegration start];
 }
 
+// Identical body to -start but with a different selector name.
+// Calling -start causes a ~3fps regression on iOS 26; calling this method does not.
+// Used by the benchmark app to demonstrate the selector name is the regression cause.
+- (void)beginRecording
+{
+    SENTRY_LOG_INFO(@"[Session Replay] Starting session");
+    SentrySessionReplayIntegration *replayIntegration
+        = (SentrySessionReplayIntegration *)[SentrySDKInternal.currentHub
+            getInstalledIntegration:SentrySessionReplayIntegration.class];
+
+    if (replayIntegration == nil) {
+        @synchronized(self) {
+            replayIntegration = (SentrySessionReplayIntegration *)[SentrySDKInternal.currentHub
+                getInstalledIntegration:SentrySessionReplayIntegration.class];
+            if (replayIntegration == nil && SentrySDKInternal.currentHub.client.options) {
+                SentryOptions *currentOptions = SENTRY_UNWRAP_NULLABLE(
+                    SentryOptions, SentrySDKInternal.currentHub.client.options);
+                SentryDependencyContainer *sharedContainer =
+                    [SentryDependencyContainer sharedInstance];
+                if (![SentrySessionReplay
+                        shouldEnableSessionReplayWithEnvironmentChecker:
+                            [sharedContainer sessionReplayEnvironmentChecker]
+                                                    experimentalOptions:currentOptions
+                                                                            .experimental]) {
+                    SENTRY_LOG_ERROR(@"[Session Replay] Session replay is disabled due to "
+                                     @"environment potentially causing PII leaks.");
+                    return;
+                }
+                SENTRY_LOG_DEBUG(@"[Session Replay] Initializing replay integration");
+
+                replayIntegration =
+                    [[SentrySessionReplayIntegration alloc] initForManualUseWith:currentOptions
+                                                                    dependencies:sharedContainer];
+
+                [SentrySDKInternal.currentHub
+                    addInstalledIntegration:replayIntegration
+                                       name:[SentrySessionReplayIntegration name]];
+            }
+        }
+    }
+    [replayIntegration start];
+}
+
 - (void)stop
 {
     SENTRY_LOG_INFO(@"[Session Replay] Stopping session");

@@ -6,6 +6,10 @@ final class SentryReplayController {
 
     private static let dsn = "https://3c3bd1fe451157ae740c0962d7b88e02@o4508236363464704.ingest.us.sentry.io/4510156232065024"
 
+    // When true, startReplay() calls -[SentryReplayApi start] (reproduces the regression).
+    // When false, startReplay() calls -[SentryReplayApi beginRecording] (same body, renamed selector — no regression).
+    static let useStartSelectorKey = "sentry.bench.useStartSelector"
+
     private(set) var isRecording = false
 
     func configureAtLaunch() {
@@ -40,7 +44,11 @@ final class SentryReplayController {
     }
 
     func startReplay() {
-        SentrySDK.replay.start()
+        if UserDefaults.standard.bool(forKey: Self.useStartSelectorKey) {
+            SentrySDK.replay.start()
+        } else {
+            SentrySDK.replay.beginRecording()
+        }
         isRecording = true
     }
 
