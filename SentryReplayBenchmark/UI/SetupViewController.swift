@@ -47,7 +47,7 @@ final class SetupViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         view.isHidden = false
-        reproSwitch.setOn(UserDefaults.standard.bool(forKey: SentryReplayController.useStartSelectorKey), animated: false)
+        reproSwitch.setOn(UserDefaults.standard.bool(forKey: SentryReplayController.applySelectorFixKey), animated: false)
         renderRecent()
     }
 
@@ -137,12 +137,12 @@ final class SetupViewController: UIViewController {
         durationControl.selectedSegmentIndex = 1
         durationControl.translatesAutoresizingMaskIntoConstraints = false
 
-        reproHeaderLabel.text = "REGRESSION REPRO"
+        reproHeaderLabel.text = "SELECTOR FIX"
         reproHeaderLabel.font = .systemFont(ofSize: 11, weight: .semibold)
         reproHeaderLabel.textColor = .secondaryLabel
         reproHeaderLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        reproLabel.text = "Use -start selector (reproduces ~3fps drop)"
+        reproLabel.text = "Apply selector fix (rename -start)"
         reproLabel.font = .systemFont(ofSize: 13, weight: .regular)
         reproLabel.textColor = .label
         reproLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -151,7 +151,7 @@ final class SetupViewController: UIViewController {
         reproSwitch.translatesAutoresizingMaskIntoConstraints = false
         reproSwitch.addTarget(self, action: #selector(reproChanged), for: .valueChanged)
 
-        reproDescLabel.text = "ON: calls -[SentryReplayApi start] → ~57fps\nOFF: calls -[SentryReplayApi beginRecording] (same body, renamed selector) → 60fps"
+        reproDescLabel.text = "OFF: calls -[SentryReplayApi start] → ~57fps regression\nON: calls -[SentryReplayApi beginRecording] (same body, renamed selector) → 60fps"
         reproDescLabel.font = .systemFont(ofSize: 11, weight: .regular)
         reproDescLabel.textColor = .secondaryLabel
         reproDescLabel.numberOfLines = 0
@@ -195,7 +195,7 @@ final class SetupViewController: UIViewController {
     }
 
     @objc private func reproChanged() {
-        UserDefaults.standard.set(reproSwitch.isOn, forKey: SentryReplayController.useStartSelectorKey)
+        UserDefaults.standard.set(reproSwitch.isOn, forKey: SentryReplayController.applySelectorFixKey)
     }
 
     private func configureRecentSection() {
