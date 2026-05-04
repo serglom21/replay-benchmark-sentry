@@ -40,6 +40,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)start;
 
 /**
+ * Identical to start() but with a different selector name.
+ * Used by the benchmark app to demonstrate that the -start selector name
+ * causes a ~3fps regression on iOS 26 independently of method body content.
+ */
+- (void)beginRecording;
+
+/**
  * Stop the current session replay recording.
  */
 - (void)stop;

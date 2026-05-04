@@ -17,6 +17,11 @@ final class SetupViewController: UIViewController {
     private let durationLabel = UILabel()
     private let durationControl = UISegmentedControl(items: ["15s", "30s", "60s"])
 
+    private let reproHeaderLabel = UILabel()
+    private let reproLabel = UILabel()
+    private let reproSwitch = UISwitch()
+    private let reproDescLabel = UILabel()
+
     private let recentHeaderRow = UIStackView()
     private let recentTitleLabel = UILabel()
     private let clearButton = UIButton(type: .system)
@@ -42,6 +47,7 @@ final class SetupViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         view.isHidden = false
+        reproSwitch.setOn(UserDefaults.standard.bool(forKey: SentryReplayController.applySelectorFixKey), animated: false)
         renderRecent()
     }
 
@@ -131,7 +137,28 @@ final class SetupViewController: UIViewController {
         durationControl.selectedSegmentIndex = 1
         durationControl.translatesAutoresizingMaskIntoConstraints = false
 
-        for v in [replayLabel, replaySwitch, durationLabel, durationControl] {
+        reproHeaderLabel.text = "SELECTOR FIX"
+        reproHeaderLabel.font = .systemFont(ofSize: 11, weight: .semibold)
+        reproHeaderLabel.textColor = .secondaryLabel
+        reproHeaderLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        reproLabel.text = "Apply selector fix (rename -start)"
+        reproLabel.font = .systemFont(ofSize: 13, weight: .regular)
+        reproLabel.textColor = .label
+        reproLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        reproSwitch.onTintColor = .systemOrange
+        reproSwitch.translatesAutoresizingMaskIntoConstraints = false
+        reproSwitch.addTarget(self, action: #selector(reproChanged), for: .valueChanged)
+
+        reproDescLabel.text = "OFF: calls -[SentryReplayApi start] → ~57fps regression\nON: calls -[SentryReplayApi beginRecording] (same body, renamed selector) → 60fps"
+        reproDescLabel.font = .systemFont(ofSize: 11, weight: .regular)
+        reproDescLabel.textColor = .secondaryLabel
+        reproDescLabel.numberOfLines = 0
+        reproDescLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        for v in [replayLabel, replaySwitch, durationLabel, durationControl,
+                  reproHeaderLabel, reproLabel, reproSwitch, reproDescLabel] {
             optionsCard.addSubview(v)
         }
 
@@ -149,8 +176,26 @@ final class SetupViewController: UIViewController {
             durationControl.topAnchor.constraint(equalTo: durationLabel.bottomAnchor, constant: 8),
             durationControl.leadingAnchor.constraint(equalTo: optionsCard.leadingAnchor, constant: 16),
             durationControl.trailingAnchor.constraint(equalTo: optionsCard.trailingAnchor, constant: -16),
-            durationControl.bottomAnchor.constraint(equalTo: optionsCard.bottomAnchor, constant: -16)
+
+            reproHeaderLabel.topAnchor.constraint(equalTo: durationControl.bottomAnchor, constant: 20),
+            reproHeaderLabel.leadingAnchor.constraint(equalTo: optionsCard.leadingAnchor, constant: 16),
+
+            reproLabel.topAnchor.constraint(equalTo: reproHeaderLabel.bottomAnchor, constant: 10),
+            reproLabel.leadingAnchor.constraint(equalTo: optionsCard.leadingAnchor, constant: 16),
+            reproLabel.trailingAnchor.constraint(lessThanOrEqualTo: reproSwitch.leadingAnchor, constant: -8),
+
+            reproSwitch.centerYAnchor.constraint(equalTo: reproLabel.centerYAnchor),
+            reproSwitch.trailingAnchor.constraint(equalTo: optionsCard.trailingAnchor, constant: -16),
+
+            reproDescLabel.topAnchor.constraint(equalTo: reproLabel.bottomAnchor, constant: 8),
+            reproDescLabel.leadingAnchor.constraint(equalTo: optionsCard.leadingAnchor, constant: 16),
+            reproDescLabel.trailingAnchor.constraint(equalTo: optionsCard.trailingAnchor, constant: -16),
+            reproDescLabel.bottomAnchor.constraint(equalTo: optionsCard.bottomAnchor, constant: -16)
         ])
+    }
+
+    @objc private func reproChanged() {
+        UserDefaults.standard.set(reproSwitch.isOn, forKey: SentryReplayController.applySelectorFixKey)
     }
 
     private func configureRecentSection() {
